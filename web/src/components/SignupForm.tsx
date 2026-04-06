@@ -19,8 +19,9 @@ export function SignupForm() {
     setLoading(true);
     const supabase = createClient();
     const origin = typeof window !== "undefined" ? window.location.origin : "";
-    const { error: err } = await supabase.auth.signUp({
-      email,
+    const emailTrimmed = email.trim();
+    const { data, error: err } = await supabase.auth.signUp({
+      email: emailTrimmed,
       password,
       options: {
         emailRedirectTo: `${origin}/auth/callback`,
@@ -34,7 +35,14 @@ export function SignupForm() {
       setError(err.message);
       return;
     }
-    setMessage("확인 메일을 보냈습니다. 메일함을 확인하거나 바로 로그인해 보세요.");
+    if (data.session) {
+      setMessage("가입되었습니다. 잠시 후 목록으로 이동합니다.");
+      window.location.assign("/posts");
+      return;
+    }
+    setMessage(
+      "가입 메일을 보냈습니다. 메일의 인증 링크를 누른 뒤 로그인하세요. 인증 전에는 로그인되지 않습니다.",
+    );
   }
 
   return (

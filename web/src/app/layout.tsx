@@ -1,6 +1,9 @@
+import { BottomNav } from "@/components/BottomNav";
 import { Header } from "@/components/Header";
+import { HeaderFallback } from "@/components/HeaderFallback";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { Suspense } from "react";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -31,9 +34,14 @@ export default function RootLayout({
       lang="ko"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-zinc-50 text-zinc-900 dark:bg-zinc-950 dark:text-zinc-50">
-        <Header />
-        <main className="flex flex-1 flex-col">{children}</main>
+      <body className="flex min-h-screen flex-col bg-zinc-50 text-zinc-900 dark:bg-zinc-950 dark:text-zinc-50">
+        <Suspense fallback={<HeaderFallback />}>
+          <Header />
+        </Suspense>
+        <main className="flex min-h-0 flex-1 flex-col pb-[calc(3.75rem+env(safe-area-inset-bottom))]">
+          {children}
+        </main>
+        <BottomNav />
       </body>
     </html>
   );

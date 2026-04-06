@@ -1,6 +1,17 @@
 import Link from "next/link";
+import { createClient } from "@/lib/supabase/server";
+import { isSupabaseConfigured } from "@/lib/supabase/env";
 
-export default function Home() {
+export default async function Home() {
+  let user: { id: string } | null = null;
+  if (isSupabaseConfigured()) {
+    const supabase = await createClient();
+    const {
+      data: { user: u },
+    } = await supabase.auth.getUser();
+    user = u;
+  }
+
   return (
     <div className="mx-auto flex max-w-lg flex-col items-center gap-6 px-4 py-24 text-center">
       <h1 className="text-3xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50">Togetall</h1>
@@ -14,12 +25,21 @@ export default function Home() {
         >
           글 보기
         </Link>
-        <Link
-          href="/auth/login"
-          className="rounded-full border border-zinc-300 px-5 py-2.5 text-sm font-medium text-zinc-900 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-100 dark:hover:bg-zinc-900"
-        >
-          로그인
-        </Link>
+        {user ? (
+          <Link
+            href="/posts/new"
+            className="rounded-full border border-zinc-300 px-5 py-2.5 text-sm font-medium text-zinc-900 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-100 dark:hover:bg-zinc-900"
+          >
+            글쓰기
+          </Link>
+        ) : (
+          <Link
+            href="/auth/login"
+            className="rounded-full border border-zinc-300 px-5 py-2.5 text-sm font-medium text-zinc-900 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-100 dark:hover:bg-zinc-900"
+          >
+            로그인
+          </Link>
+        )}
       </div>
     </div>
   );

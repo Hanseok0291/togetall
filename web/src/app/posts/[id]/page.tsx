@@ -1,5 +1,7 @@
 import { CommentForm } from "@/components/CommentForm";
+import { SupabaseSetupMessage } from "@/components/SupabaseSetupMessage";
 import { createClient } from "@/lib/supabase/server";
+import { isSupabaseConfigured } from "@/lib/supabase/env";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -21,6 +23,9 @@ type Props = { params: Promise<{ id: string }> };
 
 export async function generateMetadata(props: Props): Promise<Metadata> {
   const { id } = await props.params;
+  if (!isSupabaseConfigured()) {
+    return { title: "글 · Togetall" };
+  }
   const supabase = await createClient();
   const { data: post } = await supabase.from("posts").select("title").eq("id", id).maybeSingle();
   if (!post) return { title: "글 · Togetall" };
@@ -29,6 +34,10 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
 
 export default async function PostDetailPage(props: Props) {
   const { id } = await props.params;
+  if (!isSupabaseConfigured()) {
+    return <SupabaseSetupMessage />;
+  }
+
   const supabase = await createClient();
 
   const { data: post, error: postError } = await supabase.from("posts").select("*").eq("id", id).maybeSingle();
@@ -53,7 +62,7 @@ export default async function PostDetailPage(props: Props) {
   } = await supabase.auth.getUser();
 
   return (
-    <article className="mx-auto max-w-3xl px-4 py-8">
+    <article className="mx-auto max-w-full w-full px-4 py-8">
       <div className="flex flex-wrap items-center gap-2 text-sm text-zinc-500">
         <span className="rounded-full bg-zinc-100 px-2 py-0.5 text-xs dark:bg-zinc-800">
           {typeLabel[post.type] ?? post.type}

@@ -17,6 +17,9 @@ Thumbs.db
 .idea/
 .vscode/*
 !.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/zdotdir-macos/
+!.vscode/zdotdir-macos/**
 
 # Debug / logs
 npm-debug.log*

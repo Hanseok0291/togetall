@@ -1,12 +1,29 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
+import { isSupabaseConfigured } from "@/lib/supabase/env";
 import { signOut } from "@/lib/actions/auth";
 
+const GET_USER_TIMEOUT_MS = 8_000;
+
 export async function Header() {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  let user = null;
+  if (isSupabaseConfigured()) {
+    try {
+      const supabase = await createClient();
+      const result = await Promise.race([
+        supabase.auth.getUser(),
+        new Promise<{ data: { user: null } }>((resolve) => {
+          setTimeout(
+            () => resolve({ data: { user: null } }),
+            GET_USER_TIMEOUT_MS,
+          );
+        }),
+      ]);
+      user = result.data.user;
+    } catch {
+      user = null;
+    }
+  }
 
   return (
     <header className="border-b border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950">

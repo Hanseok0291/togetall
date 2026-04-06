@@ -1,6 +1,7 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
+import { isSupabaseConfigured } from "@/lib/supabase/env";
 import { revalidatePath } from "next/cache";
 
 export type PostType = "partner" | "crew" | "free";
@@ -8,6 +9,10 @@ export type PostType = "partner" | "crew" | "free";
 export async function createPost(
   formData: FormData,
 ): Promise<{ error: string } | { id: string }> {
+  if (!isSupabaseConfigured()) {
+    return { error: "Supabase가 설정되지 않았습니다. .env.local을 확인하세요." };
+  }
+
   const supabase = await createClient();
   const {
     data: { user },
@@ -50,6 +55,10 @@ export async function createPost(
 }
 
 export async function addComment(postId: string, formData: FormData) {
+  if (!isSupabaseConfigured()) {
+    return { error: "Supabase가 설정되지 않았습니다. .env.local을 확인하세요." };
+  }
+
   const supabase = await createClient();
   const {
     data: { user },

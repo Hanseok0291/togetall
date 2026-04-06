@@ -1,4 +1,6 @@
+import { SupabaseSetupMessage } from "@/components/SupabaseSetupMessage";
 import { createClient } from "@/lib/supabase/server";
+import { isSupabaseConfigured } from "@/lib/supabase/env";
 import type { Metadata } from "next";
 import Link from "next/link";
 
@@ -20,6 +22,10 @@ function formatDate(iso: string) {
 }
 
 export default async function PostsPage() {
+  if (!isSupabaseConfigured()) {
+    return <SupabaseSetupMessage />;
+  }
+
   const supabase = await createClient();
   const { data: posts, error } = await supabase
     .from("posts")
@@ -28,7 +34,7 @@ export default async function PostsPage() {
 
   if (error) {
     return (
-      <div className="mx-auto max-w-3xl px-4 py-8">
+      <div className="mx-auto max-full px-4 py-8">
         <p className="text-red-600">목록을 불러오지 못했습니다. 환경 변수와 Supabase 마이그레이션을 확인하세요.</p>
         <p className="mt-2 text-sm text-zinc-500">{error.message}</p>
       </div>
@@ -44,13 +50,13 @@ export default async function PostsPage() {
   const nameById = new Map((profiles ?? []).map((p) => [p.id, p.display_name]));
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-8">
+    <div className="mx-auto max-w-full w-full px-4 py-8">
       <h1 className="text-2xl font-semibold text-zinc-900 dark:text-zinc-50">파트너 · 모집</h1>
       <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">최신순으로 표시됩니다.</p>
       <ul className="mt-8 flex flex-col gap-4">
         {(posts ?? []).length === 0 && (
           <li className="rounded-xl border border-dashed border-zinc-300 p-8 text-center text-zinc-500 dark:border-zinc-700">
-            아직 글이 없습니다. 로그인 후 글을 올려보세요.
+            아직 글이 없습니다. 상단의 글쓰기 버튼으로 첫 글을 올려보세요.
           </li>
         )}
         {(posts ?? []).map((post) => (
