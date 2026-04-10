@@ -1,0 +1,12 @@
+{
+  "name": "togetall",
+  "private": true,
+  "scripts": {
+    "dev": "npm run dev --prefix web",
+    "build": "npm run build --prefix web",
+    "lint": "npm run lint --prefix web",
+    "start": "npm run start --prefix web",
+    "sync:marathon-odcloud": "npm run sync:marathon-odcloud --prefix web",
+    "sync:marathon-roadrun": "npm run sync:marathon-roadrun --prefix web"
+  }
+}

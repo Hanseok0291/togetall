@@ -29,7 +29,7 @@ export function LoginForm() {
   );
 
   return (
-    <form action={formAction} className="flex w-full max-w-sm flex-col gap-4">
+    <form action={formAction} className="flex w-full flex-col gap-4">
       <div>
         <label htmlFor="email" className="mb-1 block text-sm text-zinc-600 dark:text-zinc-400">
           이메일

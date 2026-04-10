@@ -1,8 +1,22 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { isSupabaseConfigured } from "@/lib/supabase/env";
+import { redirect } from "next/navigation";
 
-export default async function Home() {
+type HomeProps = {
+  searchParams: Promise<{ code?: string; next?: string }>;
+};
+
+export default async function Home({ searchParams }: HomeProps) {
+  const sp = await searchParams;
+  if (typeof sp.code === "string" && sp.code.length > 0) {
+    const qs = new URLSearchParams({ code: sp.code });
+    if (typeof sp.next === "string" && sp.next.length > 0) {
+      qs.set("next", sp.next);
+    }
+    redirect(`/auth/callback?${qs.toString()}`);
+  }
+
   let user: { id: string } | null = null;
   if (isSupabaseConfigured()) {
     const supabase = await createClient();

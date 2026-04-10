@@ -1,4 +1,5 @@
 import { LoginForm } from "@/components/LoginForm";
+import { ResendSignupEmail } from "@/components/ResendSignupEmail";
 import { SupabaseSetupMessage } from "@/components/SupabaseSetupMessage";
 import { isSupabaseConfigured } from "@/lib/supabase/env";
 import type { Metadata } from "next";
@@ -17,7 +18,14 @@ export default function LoginPage() {
           Togetall에서 함께 운동할 사람을 찾아보세요.
         </p>
       </div>
-      {isSupabaseConfigured() ? <LoginForm /> : <SupabaseSetupMessage />}
+      {isSupabaseConfigured() ? (
+        <>
+          <LoginForm />
+          <ResendSignupEmail />
+        </>
+      ) : (
+        <SupabaseSetupMessage />
+      )}
       <p className="text-center text-sm text-zinc-500">
         <Link href="/posts">목록으로 돌아가기</Link>
       </p>

@@ -9,11 +9,15 @@
     "dev": "npx --yes node@22 ./node_modules/next/dist/bin/next dev --webpack",
     "build": "npx --yes node@22 ./node_modules/next/dist/bin/next build",
     "start": "npx --yes node@22 ./node_modules/next/dist/bin/next start",
-    "lint": "npx --yes node@22 ./node_modules/eslint/bin/eslint.js"
+    "lint": "npx --yes node@22 ./node_modules/eslint/bin/eslint.js",
+    "sync:marathon-odcloud": "node --env-file=.env.local ./scripts/sync-odcloud-marathon.mjs",
+    "sync:marathon-roadrun": "node --env-file=.env.local ./scripts/sync-roadrun-marathon.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.10.0",
     "@supabase/supabase-js": "^2.101.0",
+    "cheerio": "^1.0.0",
+    "iconv-lite": "^0.6.3",
     "next": "16.2.1",
     "react": "19.2.4",
     "react-dom": "19.2.4"
