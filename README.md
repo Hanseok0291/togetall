@@ -3,7 +3,7 @@
 ## Deploy on Vercel
 
 1. **Root Directory:** set to **`web`** (Project → Settings → Build and Deployment). This is required so Vercel reads `web/package.json` (where `next` is declared) and runs `npm install` / `next build` in the right folder.
-2. **Install Command** and **Build Command:** leave **empty** (defaults). Optional `web/vercel.json` sets `framework: nextjs` only.
+2. **Install Command** and **Build Command:** leave **empty** (defaults). If you ever set custom commands, delete them so Vercel uses `npm install` + `next build` inside `web/`. The repo’s `web/vercel.json` only sets `framework: nextjs`.
 3. **Env vars:** see `web/.env.example` (`NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, etc.).
 
 Do **not** keep a repo-root `vercel.json` with `npm install --prefix web` while Root Directory is `web` — that can break installs (`web/web`).
