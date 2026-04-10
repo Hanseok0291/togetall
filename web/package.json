@@ -7,6 +7,7 @@
   },
   "scripts": {
     "dev": "next dev --webpack",
+    "postinstall": "node ./scripts/ensure-lightningcss-native.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
