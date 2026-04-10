@@ -35,6 +35,12 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="flex min-h-screen flex-col bg-zinc-50 text-zinc-900 dark:bg-zinc-950 dark:text-zinc-50">
+        {/* Vercel sets VERCEL_GIT_COMMIT_SHA at build time — view source to confirm Production matches Git */}
+        <span
+          hidden
+          data-git-sha={process.env.VERCEL_GIT_COMMIT_SHA ?? ""}
+          suppressHydrationWarning
+        />
         <Suspense fallback={<HeaderFallback />}>
           <Header />
         </Suspense>

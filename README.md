@@ -14,6 +14,10 @@ Do **not** keep a repo-root `vercel.json` with `npm install --prefix web` while 
 
 Production stays on the **last successful** deployment. If every Git build **Error**s, Vercel never promotes a new version. After fixing settings above, open **Deployments**, confirm a build for the latest `main` commit is **Ready**, then hard-refresh the site. Use **Redeploy** → enable **Clear build cache** once if needed.
 
+**GitHub “repository moved” / deploys stopped updating:** In GitHub → your repo, use the canonical remote URL Vercel shows (e.g. `https://github.com/hanseok0291/togetall.git`). In Vercel → Project → **Settings → Git**, reconnect or **Import** the project again from that repo so new pushes trigger builds.
+
+**Verify what’s live:** Open any page → **View page source** → find `data-git-sha="…"`. That value should match the short SHA of the deployment commit in Vercel (full value is `VERCEL_GIT_COMMIT_SHA`).
+
 ### “No Next.js version detected”
 
 Usually means Root Directory was **empty** while Vercel only looked at the repo root `package.json` (no `next` there). Setting Root Directory to **`web`** fixes it.
