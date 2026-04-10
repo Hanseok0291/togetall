@@ -2,8 +2,10 @@
 
 ## Deploy on Vercel
 
-1. **Project → Settings → Build and Deployment → Root Directory:** set to **`web`** (required). If it stays empty, Vercel only sees the repo root `package.json` layout and may report “No Next.js version detected”.
-2. Clear **Install Command** and **Build Command** overrides so defaults run inside `web/` (where `next` is listed in `package.json`).
-3. Add env vars from `web/.env.example` (e.g. `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`).
+1. **Root Directory:** leave **empty** (repository root — do **not** set `web` when using the root `vercel.json`).
+2. **Build & Deployment:** clear **Install Command** and **Build Command** in the dashboard (use the repo `vercel.json` instead). If you set overrides here, they replace `vercel.json` and can break the build.
+3. Env vars: see `web/.env.example` (`NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, etc.).
 
-**Local:** from repo root run `npm install && npm install --prefix web`, then use root `npm run dev` / `npm run build`.
+The root `package.json` lists `next` so Vercel detects Next.js; `vercel.json` installs both root stubs and `web/` dependencies, then runs `npm run build --prefix web`.
+
+**Local:** from repo root: `npm install && npm install --prefix web`, then `npm run dev` / `npm run build`.
